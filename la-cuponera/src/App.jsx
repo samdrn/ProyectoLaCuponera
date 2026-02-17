@@ -5,7 +5,15 @@ import './App.css'
 import AppRouter from './routes/AppRouter'
 
 function App() {
-  return <AppRouter/>
+  return function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<ProductPage />} />
+      <Route path="/cart" element={<CartPage />} />
+      <Route path="/login" element={<LoginPage />} />
+    </Routes>
+  );
+}
 }
 
 export default App
