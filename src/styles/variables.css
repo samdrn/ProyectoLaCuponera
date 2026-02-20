@@ -1,0 +1,59 @@
+/* variables.css */
+:root {
+  /* Tipografía */
+  --font-sans: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
+  /* Colores base */
+  --bg: #0b1020;
+  --surface: #111a33;
+  --surface-2: #0f1730;
+
+  --text: #eef2ff;
+  --muted: #b7c0dd;
+
+  /* Colores de marca / acciones */
+  --primary: #6d5efc;
+  --primary-2: #8b7dff;
+
+  --success: #22c55e;  /* cupón válido / guardado */
+  --warning: #f59e0b;  /* expira pronto */
+  --danger: #ef4444;   /* expirado / error */
+
+  /* Bordes y sombras */
+  --border: rgba(255, 255, 255, 0.12);
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+
+  /* Radios */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+
+  /* Espaciado */
+  --space-1: 6px;
+  --space-2: 10px;
+  --space-3: 14px;
+  --space-4: 18px;
+  --space-5: 24px;
+
+  /* Layout */
+  --container: 1100px;
+  --header-h: 60px;
+
+  /* Z-index (útil para modal/loader) */
+  --z-header: 20;
+  --z-modal: 1000;
+  --z-loader: 1200;
+}
+
+/* (Opcional) modo claro */
+body.light {
+  --bg: #f6f7fb;
+  --surface: #ffffff;
+  --surface-2: #f0f2f8;
+
+  --text: #0f172a;
+  --muted: #475569;
+
+  --border: rgba(15, 23, 42, 0.12);
+  --shadow: 0 10px 30px rgba(2, 8, 23, 0.12);
+}
