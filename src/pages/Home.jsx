@@ -12,7 +12,15 @@ export default function Home() {
 
     useEffect(() => {
         const fetchOffers = async () => {
-            const data = await getApprovedOffers();
+
+            const currentTimestamp = Math.floor(Date.now()/1000)
+
+            let data = await getApprovedOffers();
+
+            console.log(data, currentTimestamp)
+
+            data = data.filter((offer) => offer.startDate.seconds < currentTimestamp && offer.endDate.seconds > currentTimestamp)
+
             setOffers(data);
         };
 

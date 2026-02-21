@@ -9,7 +9,7 @@ export default function Modal({ isOpen, title, onClose, children, footer }) {
     };
 
     document.addEventListener("keydown", onKeyDown);
-    document.body.style.overflow = "hidden"; // evita scroll detrás del modal
+    document.body.style.overflow = "hidden"; 
 
     return () => {
       document.removeEventListener("keydown", onKeyDown);
@@ -23,7 +23,7 @@ export default function Modal({ isOpen, title, onClose, children, footer }) {
     <div
       className="modal-overlay"
       onMouseDown={(e) => {
-        if (e.target === e.currentTarget) onClose?.(); // click fuera
+        if (e.target === e.currentTarget) onClose?.(); 
       }}
       role="dialog"
       aria-modal="true"

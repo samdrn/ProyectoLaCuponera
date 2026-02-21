@@ -2,9 +2,9 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 
 const categories = [
   "Restaurantes",
-  "Diversión",
+  "Diversion",
   "Belleza",
-  "Educación",
+  "Educacion",
   "Salud",
 ];
 

@@ -1,28 +1,51 @@
-import React from 'react'
+import React, { useState } from 'react'
+import  Modal  from "./Modal"
 
 export const OfferCard = ({offer}) => {
-  const {description, endDate, image, limitCoupons, offerPrice, regularPrice} = offer
+  const {description, endDate, limitCoupons, offerPrice, regularPrice, category} = offer
+
+  const [isOpen, setIsOpen] = useState(false);
 
   const formattedEndDate = endDate && typeof endDate.toDate === "function"
     ? endDate.toDate().toLocaleDateString()
     : "Sin fecha";
 
+  const handleOpen = () => {
+    setIsOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
+  };
 
   return (
     <div>
-        <img src={`${image}.svg`} alt="Imagen de oferta" className='offer-image'/>
+        <img src={`/assets/${category}.jpg`} alt={`Imagen de oferta de categoría: ${category}`} className='offer-image'/>
         <p className='offer-desc'>{description}</p>
 
         <div className='price-comparison'>
             <p className='new-price'>${offerPrice}</p>
-            <p className='price-divider'>| Antes</p>
+            <p className='price-divider'> Antes</p>
             <p className='old-price'>${regularPrice}</p>
         </div>
-        <button className='details-button'>Mas Detalles</button>
+        <button className='details-button' onClick={handleOpen}>Comprar</button>
         <div className='expiration-info'>
-            <p className='ammount-bought'>Cantidad limite de compras: {limitCoupons} |</p>
-            <p className='expiration-date'>finaliza en <span>{formattedEndDate}</span></p>
+          {
+            limitCoupons?
+            <p className='ammount-bought'>Cantidad limite de compras: {limitCoupons}</p>
+            :
+            <p className='ammount-bought'>Sin limite de compras</p>
+            
+            
+          }
+            <p className='expiration-date'>finaliza: <span>{formattedEndDate}</span></p>
         </div>
+              {isOpen && (
+        <Modal
+          onCancel={handleClose}
+          onConfirm={console.log("confirmado")}
+        />
+      )}
     </div>
   )
 }
