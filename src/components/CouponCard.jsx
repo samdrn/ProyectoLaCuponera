@@ -6,6 +6,7 @@ export default function CouponCard({coupon}){
                 <p>Código: {coupon.code}</p>
                 <p>Estado: {coupon.status}</p>
                 <p>Fecha de compra: {coupon.purchaseDate?.toDate().toLocaleDateString()}</p>
+                <p>Fecha de vencimiento: {coupon.expirationDate?.toDate().toLocaleDateString()}</p>
             </div>
     );
 }

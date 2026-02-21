@@ -20,6 +20,7 @@ export async function updateDataBase(offer, coupon) {
         code: coupon.code,
         offerId: coupon.offerId,
         purchaseDate: coupon.purchaseDate,
+        status: coupon.status,
         expirationDate: coupon.expirationDate,
         userId: coupon.userId
     })

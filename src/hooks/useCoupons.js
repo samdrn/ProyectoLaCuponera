@@ -67,6 +67,7 @@ export default function useCoupons(user){
 
             expirationDate: offer.couponEndDate,
 
+            status: "Disponible",
 
             userId: user.uid
 

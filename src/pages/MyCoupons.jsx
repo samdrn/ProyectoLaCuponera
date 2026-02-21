@@ -16,11 +16,13 @@ export default function MyCoupons(){
 
     return(
         <>
-        <header>
+        <header className="site-header">
+            <div className="container header-inner">
             <h2 onClick={() => navigate("/")}>La Cuponera </h2>
             <h2>Tus cupones</h2>
+            </div>
         </header>
-            <div>
+            <div className="grid-coupons">
                 {myCoupons.map(coupon => (
                     <CouponCard coupon={coupon}></CouponCard>
                 ))}
