@@ -14,7 +14,7 @@ export default function MyCoupons(){
 
     const handleBuyClick = (offer) => {setSelectedOffer(offer)};
 
-    const handleConfirmBuy = async (offer) => { await buyCoupon(offer); setSelectedOffer(null);};
+    const handleConfirmBuy = async() => { await buyCoupon(selectedOffer); setSelectedOffer(null)};
 
     return(
 
@@ -32,10 +32,11 @@ export default function MyCoupons(){
             <div>
                 {myCoupons.map(coupon => (
 
-                    <div key={coupon.couponId}>
+                    <div key={coupon.couponId} className="coupon-container">
                         <h3>{coupon.offer?.title}</h3>
-                        <p>{coupon.code}</p>
-                        <p>{coupon.status}</p>
+                        <p>Código: {coupon.code}</p>
+                        <p>Estado: {coupon.status}</p>
+                        <p>Fecha de compra: {coupon.purchaseDate?.toDate().toLocaleDateString()}</p>
                     </div>
                 ))}
             </div>
