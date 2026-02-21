@@ -10,7 +10,7 @@ export async function updateDataBase(offer, coupon) {
         newOfferRemaining = false
     }
     
-    updateDoc(doc(db, "offers", offer.offerId), {
+    updateDoc(doc(db, "offers", offer.id), {
         remaining: newOfferRemaining,
         ammountSold: newAmmountSold
     })
@@ -21,7 +21,6 @@ export async function updateDataBase(offer, coupon) {
         offerId: coupon.offerId,
         purchaseDate: coupon.purchaseDate,
         expirationDate: coupon.expirationDate,
-        status: coupon.status,
         userId: coupon.userId
     })
 

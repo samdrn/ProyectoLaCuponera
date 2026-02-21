@@ -61,13 +61,12 @@ export default function useCoupons(user){
 
             code: generateCouponCode(offer.company),
 
-            offerId: offer.offerId,
+            offerId: offer.id,
 
             purchaseDate: Timestamp.now(),
 
             expirationDate: offer.couponEndDate,
 
-            status: "active",
 
             userId: user.uid
 

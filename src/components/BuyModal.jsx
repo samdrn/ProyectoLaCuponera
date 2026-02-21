@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import useCoupons from '../hooks/useCoupons';
+import { AuthContext } from '../context/AuthContext';
 
-export default function BuyModal({ isOpen, onClose, offer }) {
+export default function BuyModal({ isOpen, onClose, offer}) {
     // esta funcion hay que cambiarla para enviar el cupon
     const handlePayment = () => {
         console.log("procesando pago para ", offer.description);
@@ -10,6 +11,10 @@ export default function BuyModal({ isOpen, onClose, offer }) {
         onClose(); 
 
     };
+
+    const {user} = useContext(AuthContext)
+
+    const {buyCoupon} = useCoupons(user);
 
     return(
         <div className="modal-overlay">
@@ -20,7 +25,7 @@ export default function BuyModal({ isOpen, onClose, offer }) {
 
                 <p>Precio: ${offer.offerPrice}</p>
 
-                <button onClick={()=>onConfirm(coupon)}>Confirmar</button>
+                <button onClick={()=>buyCoupon(offer)}>Confirmar</button>
                 <button onClick={onClose}>Cancelar</button>
             </div>
                 <div className="card-icons-placeholder" style={{ margin: '1rem 0', display: 'flex', gap: '10px' }}>
