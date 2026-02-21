@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import  Modal  from "./Modal"
+import BuyModal from "./BuyModal"
 
 export const OfferCard = ({offer}) => {
   const {description, endDate, limitCoupons, offerPrice, regularPrice, category} = offer
@@ -20,7 +20,7 @@ export const OfferCard = ({offer}) => {
 
   return (
     <div>
-        <img src={`/assets/${category}.jpg`} alt={`Imagen de oferta de categoría: ${category}`} className='offer-image'/>
+        <img src={`/assets/${category}.svg`} alt={`Imagen de oferta de categoría: ${category}`} className='offer-image'/>
         <p className='offer-desc'>{description}</p>
 
         <div className='price-comparison'>
@@ -40,12 +40,13 @@ export const OfferCard = ({offer}) => {
           }
             <p className='expiration-date'>finaliza: <span>{formattedEndDate}</span></p>
         </div>
-              {isOpen && (
-        <Modal
-          onCancel={handleClose}
-          onConfirm={console.log("confirmado")}
-        />
-      )}
+        {isOpen && (
+            <BuyModal
+                isOpen={isOpen}
+                onClose={handleClose}
+                offer={offer}
+            />
+        )}
     </div>
   )
 }
