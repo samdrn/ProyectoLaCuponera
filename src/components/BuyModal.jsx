@@ -18,23 +18,13 @@ export default function BuyModal({ isOpen, onClose, offer}) {
 
     return(
         <div className="modal-overlay">
-            <div className="modal">
-                <h2>Confirmar compra</h2>
-                <p>¿Estás seguro de que quieres comprar el cupón?</p>
-                <h3>{offer.title}</h3>
-
-                <p>Precio: ${offer.offerPrice}</p>
-
-                <button onClick={()=>buyCoupon(offer)}>Confirmar</button>
-                <button onClick={onClose}>Cancelar</button>
-            </div>
                 <div className="card-icons-placeholder" style={{ margin: '1rem 0', display: 'flex', gap: '10px' }}>
                     <img src="/assets/credit_card.svg" alt="creditcard" />
                     <div style={{ width: '40px', height: '25px'}}><img src='/assets/ma_symbol.svg'></img></div>
                     <div style={{ width: '40px', height: '25px'}}><img src='/assets/visa.svg'></img></div>
                 </div>
 
-                <form onSubmit={(e) => { e.preventDefault(); handlePayment(); }}>
+                <form onSubmit={(e) => { e.preventDefault(); buyCoupon(offer); }}>
                     <div className="form-group" style={{ marginBottom: '1rem' }}>
                         <label style={{ display: 'block', marginBottom: '0.5rem' }}>Nombre en la tarjeta</label>
                         <input 
