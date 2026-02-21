@@ -1,30 +1,32 @@
-import React, { useContext, useState } from 'react';
-import useCoupons from '../hooks/useCoupons';
-import { AuthContext } from '../context/AuthContext';
-
-export default function BuyModal({ isOpen, onClose, offer}) {
+import React, { useState } from 'react';
+import Modal from './Modal';
+export default function BuyModal({ isOpen, onClose, offer }) {
     // esta funcion hay que cambiarla para enviar el cupon
     const handlePayment = () => {
         console.log("procesando pago para ", offer.description);
         console.log("enviando cupon");
         // aqui va a ir la logica del pago real
         onClose(); 
-
     };
 
-    const {user} = useContext(AuthContext)
+    return (
+        <Modal 
+            isOpen={isOpen} 
+            onClose={onClose} 
+            title="Pasarela de Pago"
+        >
+            <div className="payment-form">
+                <p className="payment-summary">
+                    Total a pagar: <strong>${offer.offerPrice}</strong>
+                </p>
 
-    const {buyCoupon} = useCoupons(user);
-
-    return(
-        <div className="modal-overlay">
                 <div className="card-icons-placeholder" style={{ margin: '1rem 0', display: 'flex', gap: '10px' }}>
                     <img src="/assets/credit_card.svg" alt="creditcard" />
                     <div style={{ width: '40px', height: '25px'}}><img src='/assets/ma_symbol.svg'></img></div>
                     <div style={{ width: '40px', height: '25px'}}><img src='/assets/visa.svg'></img></div>
                 </div>
 
-                <form onSubmit={(e) => { e.preventDefault(); buyCoupon(offer); }}>
+                <form onSubmit={(e) => { e.preventDefault(); handlePayment(); }}>
                     <div className="form-group" style={{ marginBottom: '1rem' }}>
                         <label style={{ display: 'block', marginBottom: '0.5rem' }}>Nombre en la tarjeta</label>
                         <input 
@@ -76,5 +78,6 @@ export default function BuyModal({ isOpen, onClose, offer}) {
                     </div>
                 </form>
             </div>
+        </Modal>
     );
 }
