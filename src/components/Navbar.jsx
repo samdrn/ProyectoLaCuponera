@@ -1,4 +1,6 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+import { logoutUser } from "../services/authService";
 
 const categories = [
   "Restaurantes",
@@ -12,6 +14,16 @@ export default function Navbar() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const activeCategory = searchParams.get("category");
+  const { user } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await logoutUser();
+      navigate("/login");
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+    }
+  };
 
   return (
     <header className="site-header">
@@ -39,19 +51,38 @@ export default function Navbar() {
         </div>
 
         <div className="row">
-          <button
-            className="btn"
-            onClick={() => navigate("/coupons")}
-          >
-            Mis cupones
-          </button>
+          {user ? (
+            <>
+              <button
+                className="btn"
+                onClick={() => navigate("/coupons")}
+              >
+                Mis cupones
+              </button>
 
-          <button
-            className="btn btn-danger"
-            onClick={() => navigate("/login")}
-          >
-            Logout
-          </button>
+              <button
+                className="btn btn-danger"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                className="btn"
+                onClick={() => navigate("/login")}
+              >
+                Iniciar Sesión
+              </button>
+              <button
+                className="btn btn-secondary"
+                onClick={() => navigate("/register")}
+              >
+                Registrarse
+              </button>
+            </>
+          )}
         </div>
 
       </div>
