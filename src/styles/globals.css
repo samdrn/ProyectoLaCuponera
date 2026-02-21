@@ -120,11 +120,11 @@ footer.site-footer {
   transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
 }
 
-.card:hover {
+/*.card:hover {
   transform: translateY(-2px);
   border-color: var(--border-strong);
   box-shadow: 0 14px 30px rgba(15, 23, 42, 0.12);
-}
+}*/
 
 .card-body {
   padding: 20px;
@@ -177,11 +177,11 @@ footer.site-footer {
   font-weight: 600;
 }
 
-.grid.coupons > *:hover{
+/*.grid.coupons > *:hover{
   transform: translateY(-4px);
   border-color: var(--border-strong, rgba(15, 23, 42, 0.18));
   box-shadow: 0 20px 44px rgba(15, 23, 42, 0.18);
-}
+}*/
 
 /* linea azul arriba */
 .grid.coupons > *::before{
@@ -439,51 +439,188 @@ body.dark .badge-secondary {
 /* =========
    MODAL
 ========= */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(2, 6, 23, 0.55);
-  padding: 16px;
-  z-index: var(--z-modal);
+.modal-overlay{
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  background: rgba(2, 6, 23, 0.55) !important;
+  z-index: 999999 !important;        /* ✅ por encima de todo */
+  
+  overflow: auto !important;
+  padding: 18px !important;
 }
 
-.modal {
-  width: min(560px, 100%);
+/* Caja del modal */
+.modal{
+  width: min(600px, 96vw);
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: 18px;
   box-shadow: 0 22px 60px rgba(15, 23, 42, 0.22);
   overflow: hidden;
+  padding: 18px;
 }
 
-.modal-header,
-.modal-footer {
-  padding: 14px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-}
-
-.modal-footer {
-  border-bottom: none;
-  border-top: 1px solid var(--border);
-}
-
-.modal-body {
-  padding: 14px 16px 16px;
-}
-
-.modal-title {
-  margin: 0;
+/* Títulos */
+.modal h2{
+  margin: 0 0 6px;
   font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--text);
 }
 
+.modal h3{
+  margin: 10px 0 6px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.modal p{
+  margin: 0 0 10px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* Resalta el precio en el texto */
+.modal p strong{
+  color: var(--text);
+  font-weight: 800;
+}
+
+/* Iconos de tarjetas (funciona aunque estén fuera del .modal) */
+.modal-overlay .card-icons-placeholder{
+  width: min(560px, 96vw);
+  margin-top: 10px;
+  padding: 12px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.10);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.modal-overlay .card-icons-placeholder img{
+  height: 26px;
+  width: auto;
+  display: block;
+}
+
+/* Form (aunque esté fuera del .modal) */
+.modal-overlay form{
+  width: min(560px, 96vw);
+  margin-top: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.10);
+  padding: 16px;
+}
+
+/* Labels */
+.modal-overlay label{
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Inputs más bonitos dentro del modal */
+.modal-overlay .input{
+  width: 100%;
+  padding: 11px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  outline: none;
+  transition: box-shadow 120ms ease, border-color 120ms ease, background 120ms ease;
+}
+
+.modal-overlay .input:focus{
+  border-color: color-mix(in srgb, var(--primary) 55%, var(--border));
+  box-shadow: 0 0 0 3px var(--primary-soft, rgba(37, 99, 235, 0.12));
+  background: color-mix(in srgb, var(--surface-2) 70%, white);
+}
+
+/* Filas del form */
+.modal-overlay .form-row{
+  display: flex;
+  gap: 12px;
+}
+
+@media (max-width: 520px){
+  .modal-overlay .form-row{
+    flex-direction: column;
+  }
+}
+
+/* Botones dentro del modal */
+.modal-overlay .btn{
+  border-radius: 12px;
+  height: 40px;
+  padding: 0 14px;
+  font-weight: 700;
+}
+
+.modal-overlay .btn-primary{
+  background: linear-gradient(135deg, var(--primary), var(--secondary, #0ea5e9));
+  border: none;
+  color: #fff;
+  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.22);
+}
+
+.modal-overlay .btn-primary:hover{
+  filter: brightness(0.97);
+}
+
+.modal-overlay .btn-secondary{
+  background: #fff;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.modal-overlay .btn-secondary:hover{
+  border-color: color-mix(in srgb, var(--primary) 25%, var(--border));
+}
+
+/* Acciones del modal */
+.modal-actions{
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+/* Si aún tienes botones sueltos (Confirmar/Cancelar) sin clases */
+.modal-overlay .modal button:not(.btn){
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  padding: 0 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.modal-overlay .modal button:not(.btn):first-of-type{
+  background: linear-gradient(135deg, var(--primary), var(--secondary, #0ea5e9));
+  border: none;
+  color: #fff;
+}
 /* =========
    LOADER
 ========= */
@@ -541,4 +678,16 @@ body.dark .badge-secondary {
   .grid.coupons {
     grid-template-columns: 1fr;
   }
+  
 }
+.modal-overlay{
+  overflow: auto;
+}
+.modal{
+  position: relative !important;
+  z-index: 1000000 !important;
+}
+.modal-overlay{
+  pointer-events: auto !important;
+}
+
