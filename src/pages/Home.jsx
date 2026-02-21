@@ -4,11 +4,13 @@ import Footer from "../components/Footer";
 import { OfferCard } from "../components/OfferCard";
 import { getApprovedOffers } from "../services/offersService";
 import { useSearchParams } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 export default function Home() {
     const [offers, setOffers] = useState([]);
     const [searchParams] = useSearchParams();
     const selectedCategory = searchParams.get("category");
+    const { user } = useAuth();
 
     useEffect(() => {
         const fetchOffers = async () => {
@@ -35,6 +37,11 @@ export default function Home() {
       <>
         <Navbar />
         <div className="container">
+            {user && user.names && (
+                <div style={{ margin: '1rem 0', fontSize: '1.2rem' }}>
+                    👋 Hola, <strong>{user.names}</strong>
+                </div>
+            )}
             <h2>Ofertas disponibles</h2>
 
             <div className="grid coupons">
