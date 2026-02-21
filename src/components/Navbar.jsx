@@ -29,12 +29,7 @@ export default function Navbar() {
     <header className="site-header">
       <div className="container header-inner">
         
-        <h2
-          style={{ cursor: "pointer", margin: 0 }}
-          onClick={() => navigate("/")}
-        >
-          La Cuponera
-        </h2>
+        <h2 onClick={() => navigate("/")}>La Cuponera</h2>
 
         <div className="row">
           {categories.map((category) => (

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import  Modal  from "./Modal"
+
 
 export const OfferCard = ({offer}) => {
   const {description, endDate, limitCoupons, offerPrice, regularPrice, category} = offer
@@ -10,13 +10,6 @@ export const OfferCard = ({offer}) => {
     ? endDate.toDate().toLocaleDateString()
     : "Sin fecha";
 
-  const handleOpen = () => {
-    setIsOpen(true);
-  };
-
-  const handleClose = () => {
-    setIsOpen(false);
-  };
 
   return (
     <div>
@@ -28,7 +21,7 @@ export const OfferCard = ({offer}) => {
             <p className='price-divider'> Antes</p>
             <p className='old-price'>${regularPrice}</p>
         </div>
-        <button className='details-button' onClick={handleOpen}>Comprar</button>
+        <button className='details-button'>Comprar</button>
         <div className='expiration-info'>
           {
             limitCoupons?
@@ -40,12 +33,6 @@ export const OfferCard = ({offer}) => {
           }
             <p className='expiration-date'>finaliza: <span>{formattedEndDate}</span></p>
         </div>
-              {isOpen && (
-        <Modal
-          onCancel={handleClose}
-          onConfirm={console.log("confirmado")}
-        />
-      )}
     </div>
   )
 }

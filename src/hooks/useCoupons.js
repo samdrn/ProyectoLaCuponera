@@ -1,9 +1,10 @@
 
-import { collection, getDoc, addDoc, query, doc, getDocs, where, Timestamp } from "firebase/firestore";
+import { collection, getDoc, query, doc, getDocs, where, Timestamp } from "firebase/firestore";
 
 import { db } from '../services/firebase';
 import { generateCouponCode } from '../utils/generateCouponCode';
 import { useState, useEffect } from 'react';
+import { updateDataBase } from "../utils/updateDataBase";
 
 export default function useCoupons(user){
 
@@ -58,18 +59,24 @@ export default function useCoupons(user){
 
         const newCoupon = {
 
-            code: generateCouponCode(),
+            code: generateCouponCode(offer.company),
 
             offerId: offer.offerId,
 
             purchaseDate: Timestamp.now(),
 
+            expirationDate: offer.couponEndDate,
+
             status: "active",
 
             userId: user.uid
+
+
         };
 
-        await addDoc(collection(db, "coupons"), newCoupon);
+        await updateDataBase(offer, newCoupon);
+
+
 
         fetchMyCoupons();
     

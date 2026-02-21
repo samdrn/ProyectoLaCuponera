@@ -1,16 +1,11 @@
-export default function CouponCard({coupon, onBuy}){
+export default function CouponCard({coupon}){
 
     return(
-        <div className="coupon-card">
-            <img src={coupon.image} alt={coupon.title} />
-        
-        <h3>{coupon.title}</h3>
-        <p>{coupon.description}</p>
-
-        <p>${coupon.offerPrice}{" " }</p>
-        <p>{coupon.regularPrice}{" "}</p>
-
-        <button onClick={() => onBuy(coupon)}>Comprar</button>
-        </div>
+            <div key={coupon.couponId} className="coupon-container">
+                <h3>{coupon.offer?.title}</h3>
+                <p>Código: {coupon.code}</p>
+                <p>Estado: {coupon.status}</p>
+                <p>Fecha de compra: {coupon.purchaseDate?.toDate().toLocaleDateString()}</p>
+            </div>
     );
 }
