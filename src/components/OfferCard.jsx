@@ -1,10 +1,18 @@
 import React, { useState } from 'react'
-
+import BuyModal from './BuyModal';
 
 export const OfferCard = ({offer}) => {
   const {description, endDate, limitCoupons, offerPrice, regularPrice, category} = offer
 
   const [isOpen, setIsOpen] = useState(false);
+
+  const handleOpen = () => {
+    setIsOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
+  };
 
   const formattedEndDate = endDate && typeof endDate.toDate === "function"
     ? endDate.toDate().toLocaleDateString()
@@ -13,7 +21,7 @@ export const OfferCard = ({offer}) => {
 
   return (
     <div>
-        <img src={`/assets/${category}.jpg`} alt={`Imagen de oferta de categoría: ${category}`} className='offer-image'/>
+        <img src={`/assets/${category}.svg`} alt={`Imagen de oferta de categoría: ${category}`} className='offer-image'/>
         <p className='offer-desc'>{description}</p>
 
         <div className='price-comparison'>
@@ -21,7 +29,7 @@ export const OfferCard = ({offer}) => {
             <p className='price-divider'> Antes</p>
             <p className='old-price'>${regularPrice}</p>
         </div>
-        <button className='details-button'>Comprar</button>
+        <button className='details-button' onClick={()=>handleOpen()}>Comprar</button>
         <div className='expiration-info'>
           {
             limitCoupons?
@@ -32,6 +40,13 @@ export const OfferCard = ({offer}) => {
             
           }
             <p className='expiration-date'>finaliza: <span>{formattedEndDate}</span></p>
+                    {isOpen && (
+            <BuyModal
+                isOpen={isOpen}
+                onClose={handleClose}
+                offer={offer}
+            />
+        )}
         </div>
     </div>
   )

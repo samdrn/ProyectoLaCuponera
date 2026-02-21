@@ -4,7 +4,7 @@ import { collection, addDoc, updateDoc, doc } from "firebase/firestore";
 export async function updateDataBase(offer, coupon) {
 
     const newAmmountSold = offer.ammountSold + 1
-    const newOfferRemaining = true
+    let newOfferRemaining = true
 
     if (offer.limitCoupons && newAmmountSold >= offer.limitCoupons){
         newOfferRemaining = false
