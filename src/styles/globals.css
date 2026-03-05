@@ -827,24 +827,153 @@ body.dark .badge-secondary {
   z-index: var(--z-loader);
 }
 
-/* =========
-   RESPONSIVE
-========= */
-@media (max-width: 640px) {
-  .row {
-    flex-direction: column;
-    align-items: stretch;
-  }
 
-  
-  
-  
-  
-  .grid.coupons {
-    grid-template-columns: 1fr;
-  }
-  
+
+ 
+/* =========
+   MY COUPONS
+========= */
+
+.grid-coupons, .my-coupons-grid {
+  display: grid;
+  /* Esto crea columnas de máximo 400px y las centra */
+  grid-template-columns: repeat(auto-fill, minmax(320px, 400px));
+  gap: 24px;
+  justify-content: center; 
+  padding: 40px 20px;
 }
+
+/* 2. LA TARJETA */
+.coupon-card-purchased {
+  background: white;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  min-height: 320px;
+}
+
+.coupon-card-purchased:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* SECCIÓN SUPERIOR */
+.coupon-main-info {
+  padding: 24px;
+  flex: 1;
+}
+
+.coupon-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 12px 0;
+  line-height: 1.3;
+}
+
+.price-tag {
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.price-tag span {
+  color: var(--accent); /* Naranja */
+  font-weight: 900;
+  font-size: 24px;
+  margin-left: 4px;
+}
+
+.status-badge {
+  font-size: 10px;
+  background: #dcfce7;
+  color: #166534;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* 3. EL DIVISOR TIPO TICKET (Aquí está la magia) */
+.coupon-card-divider {
+  border-top: 2px dashed #e2e8f0;
+  margin: 0;
+  position: relative;
+  height: 2px;
+}
+
+/* Círculos invertidos en los bordes */
+.coupon-card-divider::before,
+.coupon-card-divider::after {
+  content: "";
+  position: absolute;
+  top: -12px; /* Centrado sobre la línea */
+  width: 24px;
+  height: 24px;
+  background: var(--bg); /* Toma el color del fondo de la página */
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  z-index: 2;
+}
+
+.coupon-card-divider::before { 
+  left: -13px; 
+  box-shadow: inset -4px 0 4px rgba(0,0,0,0.02);
+}
+
+.coupon-card-divider::after { 
+  right: -13px; 
+  box-shadow: inset 4px 0 4px rgba(0,0,0,0.02);
+}
+
+/* 4. SECCIÓN INFERIOR (CÓDIGO) */
+.coupon-code-section {
+  background: #f8fafc;
+  padding: 24px;
+  text-align: center;
+}
+
+.code-label {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--muted);
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.code-box {
+  background: white;
+  border: 2px solid var(--primary);
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.code-box code {
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--primary);
+  letter-spacing: 3px;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.help-text {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  font-style: italic;
+}
+/* --- Estilo para el CouponCard (Cupones ya comprados) --- */
+
+
 .modal-overlay{
   overflow: auto;
 }
