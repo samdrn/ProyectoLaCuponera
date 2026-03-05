@@ -3,8 +3,10 @@ import BuyModal from './BuyModal';
 
 export const OfferCard = ({offer}) => {
   const {description, endDate, limitCoupons, offerPrice, regularPrice, category} = offer
+  
 
   const [isOpen, setIsOpen] = useState(false);
+  const cardClass = isOpen ? "offer-card-horizontal modal-active" : "offer-card-horizontal";
 
   const handleOpen = () => {
     setIsOpen(true);
@@ -20,34 +22,44 @@ export const OfferCard = ({offer}) => {
 
 
   return (
-    <div>
-        <img src={`/assets/${category}.svg`} alt={`Imagen de oferta de categoría: ${category}`} className='offer-image'/>
-        <p className='offer-desc'>{description}</p>
+    <article className={cardClass}> 
+        {/* Lado Izquierdo: Imagen y Badge */}
+        <div className="offer-card-image-content">
+          <img src={`/assets/${category}.svg`} alt={category} className="offer-image"/>
+          <span className="category-badge">{category}</span>
+        </div>
 
-        <div className='price-comparison'>
-            <p className='new-price'>${offerPrice}</p>
-            <p className='price-divider'> Antes</p>
-            <p className='old-price'>${regularPrice}</p>
+        {/* Lado Medio: Información principal */}
+        <div className="offer-card-main-info">
+          <h3 className="offer-desc" title={description}>{description}</h3>
+          
+          <div className="offer-card-footer-info">
+            {limitCoupons ? (
+              <p className="amount-bought">Límite: <strong>{limitCoupons}</strong> unidades</p>
+            ) : (
+              <p className="amount-bought">Sin límite de compra</p>
+            )}
+            <p className="expiration-date">Vence: <span>{formattedEndDate}</span></p>
+          </div>
         </div>
-        <button className='details-button' onClick={()=>handleOpen()}>Comprar</button>
-        <div className='expiration-info'>
-          {
-            limitCoupons?
-            <p className='ammount-bought'>Cantidad limite de compras: {limitCoupons}</p>
-            :
-            <p className='ammount-bought'>Sin limite de compras</p>
+
+        {/* Lado Derecho: Precios y Acción */}
+        <div className="offer-card-actions">
+            <div className="price-stack">
+              <span className="old-price">${regularPrice}</span>
+              <span className="new-price">${offerPrice}</span>
+              <span className="save-tag">AHORRA ${(regularPrice - offerPrice).toFixed(0)}</span>
+            </div>
             
-            
-          }
-            <p className='expiration-date'>finaliza: <span>{formattedEndDate}</span></p>
-                    {isOpen && (
-            <BuyModal
-                isOpen={isOpen}
-                onClose={handleClose}
-                offer={offer}
-            />
+            <button className="details-button" onClick={handleOpen}>
+              Comprar
+            </button>
+        </div>
+
+        {isOpen && (
+            <BuyModal isOpen={isOpen} onClose={handleClose} offer={offer} />
         )}
-        </div>
-    </div>
+    </article>
+  
   )
 }

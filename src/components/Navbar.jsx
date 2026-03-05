@@ -1,4 +1,4 @@
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { logoutUser } from "../services/authService";
 
@@ -19,7 +19,8 @@ export default function Navbar() {
   const handleLogout = async () => {
     try {
       await logoutUser();
-      navigate("/login");
+      // Si usas un contexto de Auth, asegúrate de limpiar el estado del usuario aquí también
+      window.location.reload(); // Truco rápido para refrescar el estado de auth
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
     }
@@ -29,52 +30,38 @@ export default function Navbar() {
     <header className="site-header">
       <div className="container header-inner">
         
-        <h2 onClick={() => navigate("/")}>La Cuponera</h2>
+        {/* LOGO CON SPAN PARA EL NARANJA */}
+        <div className="logo" onClick={() => navigate("/")} style={{cursor: 'pointer'}}>
+          La<span>Cuponera</span>
+        </div>
 
-        <div className="row">
+        {/* CATEGORÍAS COMO ENLACES LIMPIOS */}
+        <nav className="nav-categories">
           {categories.map((category) => (
             <button
               key={category}
-              className={`btn ${
-                activeCategory === category ? "btn-primary" : ""
-              }`}
+              className={`nav-cat-link ${activeCategory === category ? "active" : ""}`}
               onClick={() => navigate(`/?category=${category}`)}
             >
               {category}
             </button>
           ))}
-        </div>
+        </nav>
 
-        <div className="row">
+        {/* ACCIONES DE USUARIO */}
+        <div className="nav-actions">
           {user ? (
             <>
-              <button
-                className="btn"
-                onClick={() => navigate("/coupons")}
-              >
-                Mis cupones
-              </button>
-
-              <button
-                className="btn btn-danger"
-                onClick={handleLogout}
-              >
-                Logout
-              </button>
+              <Link to="/coupons" className="nav-link-simple">Mis cupones</Link>
+              <button className="btn-logout" onClick={handleLogout}>Salir</button>
             </>
           ) : (
             <>
-              <button
-                className="btn"
-                onClick={() => navigate("/login")}
-              >
-                Iniciar Sesión
+              <button className="btn-login-text" onClick={() => navigate("/login")}>
+                Entrar
               </button>
-              <button
-                className="btn btn-secondary"
-                onClick={() => navigate("/register")}
-              >
-                Registrarse
+              <button className="nav-auth-btn" onClick={() => navigate("/register")}>
+                Crear cuenta
               </button>
             </>
           )}
