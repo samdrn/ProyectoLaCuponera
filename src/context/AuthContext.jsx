@@ -12,13 +12,17 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             if (currentUser) {
-                // esto es para sacar la informacion del usuario de firebase 
-                const docRef = doc(db, "users", currentUser.uid);
-                const docSnap = await getDoc(docRef);
-                
-                if (docSnap.exists()) {
-                    setUser({ ...currentUser, ...docSnap.data() });
-                } else {
+                try {
+                    const docRef = doc(db, "users", currentUser.uid);
+                    const docSnap = await getDoc(docRef);
+                    
+                    if (docSnap.exists()) {
+                        setUser({ ...currentUser, ...docSnap.data() });
+                    } else {
+                        setUser(currentUser);
+                    }
+                } catch (error) {
+                    console.error("Error al obtener usuario:", error);
                     setUser(currentUser);
                 }
             } else {
@@ -26,12 +30,15 @@ export const AuthProvider = ({ children }) => {
             }
             setLoading(false);
         });
+        
         return unsubscribe;
     }, []);
 
+    
+
     return (
         <AuthContext.Provider value={{ user, loading }}>
-            {!loading && children}
+            {children} 
         </AuthContext.Provider>
     );
 };
