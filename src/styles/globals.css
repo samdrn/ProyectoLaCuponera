@@ -985,3 +985,77 @@ body.dark .badge-secondary {
   pointer-events: auto !important;
 }
 
+/*Estilo par prfile*/
+
+.container >.btn{
+  margin-top: 24px;
+}
+
+.btn{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.2s;
+}
+
+.btn-primary{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s;
+
+  background: var(--grad-accent);
+  color: white;
+  border: none;
+  box-shadow: 0 6px 12px rgba(249, 115, 22, 0.3);
+}
+
+.btn-primary:hover:not(:disabled){
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+.btn-primary:disabled{
+  opacity: 0.65;
+  transform: none;
+}
+
+.form-group{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.form-group label{
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.input-password{
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  outline: none;
+  font-size: 14px;
+}
+
+.input-password:focus{
+  border-color: var(--primary-2);
+  box-shadow: var(--focus);
+  background: var(--surface);
+}

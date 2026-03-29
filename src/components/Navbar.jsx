@@ -53,6 +53,7 @@ export default function Navbar() {
           {user ? (
             <>
               <Link to="/coupons" className="nav-link-simple">Mis cupones</Link>
+              <Link to="/profile" className="nav-link-simple">Mi Perfil</Link>
               <button className="btn-logout" onClick={handleLogout}>Salir</button>
             </>
           ) : (
