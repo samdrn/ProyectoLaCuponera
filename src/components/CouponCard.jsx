@@ -1,26 +1,26 @@
 export default function CouponCard({ coupon }) {
   if (!coupon) return null;
 
-  // 💡 Imprimimos en consola para ver la estructura real (puedes borrarlo luego)
-  console.log("Datos del cupón:", coupon);
+  // 1. Los datos del cupón (donde está el código real de canje)
+  // Según tu captura, el campo se llama 'code'
+  const redeemCode = coupon.code || "SIN-CODIGO";
 
-  // Intentamos sacar la info de la oferta (ajusta 'offer' si tu objeto es diferente)
-  // Normalmente es coupon.offer.description o similar
-  const info = coupon.offer || coupon; 
+  // 2. Los datos de la oferta (donde está el título y precio)
+  // Si tu hook useCoupons ya une la oferta al cupón, estará en coupon.offer
+  const offerData = coupon.offer || {}; 
   
-  const description = info.description || "Cupón de Beneficio";
-  const price = info.offerPrice || info.regularPrice || "0";
-  const category = info.category || "General";
-  
-  // Usamos el ID del documento o el ID interno
-  const couponId = (coupon.id || info.id || "000000").toString().substring(0, 8).toUpperCase();
+  const description = offerData.description || "Cupón de Descuento";
+  const price = offerData.offerPrice || "0.00";
+  const category = offerData.category || "General";
 
   return (
     <div className="coupon-card-purchased">
       <div className="coupon-main-info">
         <div className="coupon-header-row">
           <span className="badge-category">{category}</span>
-          <span className="status-badge">ADQUIRIDO</span>
+          <span className="status-badge">
+            {coupon.status === 'Disponible' ? 'ACTIVO' : coupon.status}
+          </span>
         </div>
         
         <h4 className="coupon-title">{description}</h4>
@@ -32,9 +32,10 @@ export default function CouponCard({ coupon }) {
       <div className="coupon-code-section">
         <p className="code-label">CÓDIGO DE CANJE ÚNICO</p>
         <div className="code-box">
-          <code>#{couponId}</code>
+          {/* AQUÍ cargamos el código real de la colección 'coupons' */}
+          <code>{redeemCode}</code>
         </div>
-        <small className="help-text">Presenta este código en caja</small>
+        <small className="help-text">Muestra este código al empleado en caja</small>
       </div>
     </div>
   );
