@@ -14,13 +14,13 @@ export default function Navbar() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const activeCategory = searchParams.get("category");
-  const { user } = useAuth();
+  const { user } = useAuth(); // Asumimos que useAuth nos da el usuario con su ROL
 
   const handleLogout = async () => {
     try {
       await logoutUser();
-      // Si usas un contexto de Auth, asegúrate de limpiar el estado del usuario aquí también
-      window.location.reload(); // Truco rápido para refrescar el estado de auth
+      navigate("/");
+      window.location.reload(); 
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
     }
@@ -30,12 +30,10 @@ export default function Navbar() {
     <header className="site-header">
       <div className="container header-inner">
         
-        {/* LOGO CON SPAN PARA EL NARANJA */}
         <div className="logo" onClick={() => navigate("/")} style={{cursor: 'pointer'}}>
           La<span>Cuponera</span>
         </div>
 
-        {/* CATEGORÍAS COMO ENLACES LIMPIOS */}
         <nav className="nav-categories">
           {categories.map((category) => (
             <button
@@ -48,11 +46,21 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* ACCIONES DE USUARIO */}
         <div className="nav-actions">
           {user ? (
             <>
-              <Link to="/coupons" className="nav-link-simple">Mis cupones</Link>
+              {/* 🎫 OPCIÓN PARA EL EMPLEADO (Solo visible si tiene el rol) */}
+              {user.role === 'employee' && (
+                <Link to="/employee" className="nav-link-simple" style={{color: 'var(--accent)', fontWeight: 'bold'}}>
+                  Canje de Cupones
+                </Link>
+              )}
+
+              {/* 🏢 OPCIONES PARA CLIENTE COMÚN */}
+              {user.role === 'client' && (
+                <Link to="/coupons" className="nav-link-simple">Mis cupones</Link>
+              )}
+
               <Link to="/profile" className="nav-link-simple">Mi Perfil</Link>
               <button className="btn-logout" onClick={handleLogout}>Salir</button>
             </>
