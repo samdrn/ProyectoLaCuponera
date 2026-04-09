@@ -3,19 +3,19 @@ import Footer from "../components/Footer";
 
 import React from 'react'
 
-export const AdminDashboard = () => {
+export default function AdminDashboard() {
 
-    user = useAuth()
+    const user = useAuth()
   return (
     <>
-    <Header className="site-header">
+    <header className="site-header">
     <div className="container header-inner">
         <div className="logo" onClick={() => navigate("/")} style={{cursor: 'pointer'}}>
             La<span>Cuponera</span>
         </div>
         <button className="log-out-button">Finalizar Sesión</button>
     </div>
-    </Header>
+    </header>
     <h1>Bienvenido {user.names}</h1>
     <div className="dashboard-link-container">
 

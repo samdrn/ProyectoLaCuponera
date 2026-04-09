@@ -5,6 +5,8 @@ import Register from "../pages/Register";
 import MyCoupons from "../pages/MyCoupons";
 import Profile from "../pages/Profile";
 import About from "../pages/About";
+import AdminDashboard from "../pages/AdminDashboard"
+import AdminRoute from "./AdminRoute";
 
 // Importa tus nuevas páginas de Empleado (Adrián)
 import EmployeeDashboard from "../pages/EmployeeDashboard";
@@ -65,6 +67,16 @@ export default function AppRouter() {
                 {/* 🚧 Espacio para Rutas de Administración y Empresas (Pendientes) */}
                 {/* <Route path="/admin" element={<AdminRoute>...</AdminRoute>} /> */}
                 {/* <Route path="/company" element={<CompanyRoute>...</CompanyRoute>} /> */}
+                <Route path="/admin_dashboard"
+                element={
+                    <ProtectedRoute>
+                        <AdminRoute>
+                            <AdminDashboard/>
+                        </AdminRoute>
+                    </ProtectedRoute>
+
+                }
+                />
 
             </Routes>
         </BrowserRouter>
