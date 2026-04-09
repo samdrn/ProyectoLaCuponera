@@ -1059,3 +1059,49 @@ body.dark .badge-secondary {
   box-shadow: var(--focus);
   background: var(--surface);
 }
+
+.dashboard-link-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 2rem;
+    justify-content: center;
+    align-content: center;
+    min-height: 100vh;
+    padding: 2rem;
+    background-color: var(--secondary);
+}
+
+
+.dashboard-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primary);
+    border-radius: 16px;
+    padding: 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+
+.dashboard-link:hover {
+    transform: translateY(-5px) scale(1.03);
+    background-color: var(--accent);
+}
+
+
+.dashboard-link-image {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 1rem;
+}
+
+
+.dashboard-link h3 {
+    color: white;
+    font-size: 1.2rem;
+    margin: 0;
+}
+
