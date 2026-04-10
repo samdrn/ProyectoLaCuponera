@@ -1,85 +1,68 @@
-
 import { collection, getDoc, query, doc, getDocs, where, Timestamp } from "firebase/firestore";
 
 import { db } from '../services/firebase';
-import { generateCouponCode } from '../utils/generateCouponCode';
 import { useState, useEffect } from 'react';
-import { updateDataBase } from "../utils/updateDataBase";
 
-export default function useCoupons(user){
+/**
+ * Hook para cargar las ofertas disponibles y los cupones del usuario.
+ * La lógica de COMPRA fue migrada a usePayments.js para mantener
+ * la separación de responsabilidades.
+ */
+export default function useCoupons(user) {
 
     const [offers, setOffers] = useState([]);
     const [myCoupons, setMyCoupons] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    // Carga todas las ofertas disponibles en Firestore
     const fetchOffers = async () => {
-
-        const ofertas = await getDocs (collection(db, "offers"));
-
-        const offersList = ofertas.docs.map(doc =>({
+        const snapshot = await getDocs(collection(db, "offers"));
+        const offersList = snapshot.docs.map(doc => ({
+            id: doc.id,
             offerId: doc.id,
             ...doc.data()
         }));
-
         setOffers(offersList);
     };
 
+    // Carga los cupones del usuario y enriquece cada uno con los datos de su oferta
     const fetchMyCoupons = async () => {
+        if (!user) {
+            setLoading(false);
+            return;
+        }
 
-        if (!user) return;
+        try {
+            const q = query(collection(db, "coupons"), where("userId", "==", user.uid));
+            const snapshot = await getDocs(q);
 
-        const q = query(collection(db, "coupons"), where("userId", "==", user.uid));
+            const couponsList = await Promise.all(
+                snapshot.docs.map(async (couponDoc) => {
+                    const couponData = couponDoc.data();
 
-        const ofertas = await getDocs(q);
+                    // Obtener los datos de la oferta asociada al cupón
+                    let offerData = null;
+                    if (couponData.offerId) {
+                        const offerRef = doc(db, "offers", couponData.offerId);
+                        const offerSnap = await getDoc(offerRef);
+                        offerData = offerSnap.exists() ? offerSnap.data() : null;
+                    }
 
-        const couponsList = await Promise.all(
-            ofertas.docs.map(async (couponDoc) => {
-                const couponData = couponDoc.data();
+                    return {
+                        couponId: couponDoc.id,
+                        id: couponDoc.id,
+                        ...couponData,
+                        offer: offerData,
+                    };
+                })
+            );
 
-                const offerRef = doc(db, "offers", couponData.offerId);
-                const offerData = await getDoc(offerRef);
-
-                return {
-                    couponId: couponDoc.id,
-                    ...couponData,
-                    offer: offerData.exists() ? offerData.data() : null
-                };
-            })
-        );
-        
-        setMyCoupons(couponsList);
-
-        setLoading(false);
-    };
-
-    const buyCoupon = async (offer) => {
-        console.log("Comprando cupón para oferta:", offer);
-
-        if(!user) throw new Error("Usuario no autenticado");
-
-        const newCoupon = {
-
-            code: generateCouponCode(offer.company),
-
-            offerId: offer.id,
-
-            purchaseDate: Timestamp.now(),
-
-            expirationDate: offer.couponEndDate,
-
-            status: "Disponible",
-
-            userId: user.uid
-
-
-        };
-
-        await updateDataBase(offer, newCoupon);
-
-
-
-        fetchMyCoupons();
-    
+            setMyCoupons(couponsList);
+        } catch (err) {
+            console.error("Error al cargar los cupones:", err);
+        } finally {
+            setLoading(false);
+        }
     };
 
     useEffect(() => {
@@ -93,7 +76,8 @@ export default function useCoupons(user){
     return {
         offers,
         myCoupons,
-        buyCoupon,
-        loading
+        loading,
+        // Exponer refetch para que los componentes puedan recargar tras una compra
+        refetchCoupons: fetchMyCoupons,
     };
 }
