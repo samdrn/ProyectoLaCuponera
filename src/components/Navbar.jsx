@@ -49,7 +49,14 @@ export default function Navbar() {
         <div className="nav-actions">
           {user ? (
             <>
-              {/* 🎫 OPCIÓN PARA EL EMPLEADO (Solo visible si tiene el rol) */}
+              {/* 🔧 OPCIÓN PARA EL ADMINISTRADOR */}
+              {user.role === 'admin' && (
+                <Link to="/admin_dashboard" className="nav-link-simple" style={{color: 'var(--accent)', fontWeight: 'bold'}}>
+                  Panel Admin
+                </Link>
+              )}
+
+              {/* 🎫 OPCIÓN PARA EL EMPLEADO */}
               {user.role === 'employee' && (
                 <Link to="/employee" className="nav-link-simple" style={{color: 'var(--accent)', fontWeight: 'bold'}}>
                   Canje de Cupones

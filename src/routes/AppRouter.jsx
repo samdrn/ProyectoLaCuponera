@@ -7,6 +7,9 @@ import Profile from "../pages/Profile";
 import About from "../pages/About";
 import AdminDashboard from "../pages/AdminDashboard"
 import AdminRoute from "./AdminRoute";
+import ManageClients from "../pages/ManageClients";
+import ManageCompanies from "../pages/ManageCompanies";
+import ManageCategories from "../pages/ManageCategories";
 
 // Importa tus nuevas páginas de Empleado (Adrián)
 import EmployeeDashboard from "../pages/EmployeeDashboard";
@@ -67,16 +70,22 @@ export default function AppRouter() {
                 {/* 🚧 Espacio para Rutas de Administración y Empresas (Pendientes) */}
                 {/* <Route path="/admin" element={<AdminRoute>...</AdminRoute>} /> */}
                 {/* <Route path="/company" element={<CompanyRoute>...</CompanyRoute>} /> */}
-                <Route path="/admin_dashboard"
-                element={
-                    <ProtectedRoute>
-                        <AdminRoute>
-                            <AdminDashboard/>
-                        </AdminRoute>
-                    </ProtectedRoute>
+                <Route path="/admin_dashboard" element={
+                    <ProtectedRoute><AdminRoute><AdminDashboard /></AdminRoute></ProtectedRoute>
+                } />
 
-                }
-                />
+                {/* 🛠️ Páginas de gestión del Administrador */}
+                <Route path="/admin/clients" element={
+                    <ProtectedRoute><AdminRoute><ManageClients /></AdminRoute></ProtectedRoute>
+                } />
+
+                <Route path="/admin/companies" element={
+                    <ProtectedRoute><AdminRoute><ManageCompanies /></AdminRoute></ProtectedRoute>
+                } />
+
+                <Route path="/admin/categories" element={
+                    <ProtectedRoute><AdminRoute><ManageCategories /></AdminRoute></ProtectedRoute>
+                } />
 
             </Routes>
         </BrowserRouter>

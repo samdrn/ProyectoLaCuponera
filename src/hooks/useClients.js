@@ -1,61 +1,44 @@
 import { useState } from "react";
-import { getAll, getById } from "../services/clientsService";
+import { getAll, getById } from "../services/clientService";
 
-
-export default function useclients(){
-
-    const [clients, setclients] = useState([]);
-    const [Client, setClient] = useState(null)
+export default function useClients() {
+    const [clients, setClients] = useState([]);
+    const [client, setClient] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-
-    const getclients = async () => {
-        setError(null)
+    const getClients = async () => {
+        setError(null);
         setLoading(true);
-
-        try{
-        const data = await getAll()
-
-        setclients(data);
-        }
-
-        catch(err){
+        try {
+            const data = await getAll();
+            setClients(data);
+        } catch (err) {
             setError(err.message);
-        }
-
-        finally{
+        } finally {
             setLoading(false);
         }
-
     };
 
     const getClientById = async (id) => {
-
         setError(null);
         setLoading(true);
-
-        try{
+        try {
             const data = await getById(id);
             setClient(data);
-        }
-
-        catch(err){
+        } catch (err) {
             setError(err.message);
-        }
-
-        finally{
+        } finally {
             setLoading(false);
         }
-        
     };
 
     return {
-    clients,
-    Client,
-    loading,
-    error,
-    getclients,
-    getClientById,
-  };
+        clients,
+        client,
+        loading,
+        error,
+        getClients,
+        getClientById,
+    };
 }
