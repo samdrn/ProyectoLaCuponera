@@ -628,7 +628,7 @@ body.dark .badge-secondary {
   border: 1px solid var(--border);
   border-radius: 18px;
   box-shadow: 0 22px 60px rgba(15, 23, 42, 0.22);
-  overflow: hidden;
+  overflow: auto;
   padding: 18px;
 }
 
