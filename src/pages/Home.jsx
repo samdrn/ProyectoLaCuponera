@@ -5,7 +5,6 @@ import { OfferCard } from "../components/OfferCard";
 import { getApprovedOffers } from "../services/offersService";
 import { useSearchParams } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import { Timestamp } from "firebase/firestore";
 
 export default function Home() {
     const [offers, setOffers] = useState([]);
@@ -17,7 +16,7 @@ export default function Home() {
         const fetchOffers = async () => {
             let data = await getApprovedOffers();
 
-            data = data.filter(o => o.endDate > Timestamp.now())
+            console.log("OFERTAS APROBADAS:", data);
 
             // para demo, no tiene filtros
             setOffers(data);
