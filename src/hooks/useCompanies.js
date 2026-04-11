@@ -81,10 +81,13 @@ export default function useCompanies(){
         setLoading(true);
 
         try{
-            const updated = await update(id, data);
+            await update(id, data);
+            
             setCompanies((prev) =>
-            prev.map((c) => (c.id === id ? updated : c))
-        );}
+                prev.map((c) =>
+                    c.id === id ? { ...c, ...data } : c
+        ));
+        }
 
         catch(err){
             setError(err.message);
