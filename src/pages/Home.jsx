@@ -14,19 +14,23 @@ export default function Home() {
 
     useEffect(() => {
         const fetchOffers = async () => {
-
-            const currentTimestamp = Math.floor(Date.now()/1000)
-
             let data = await getApprovedOffers();
 
-            console.log(data, currentTimestamp)
+            console.log("OFERTAS APROBADAS:", data);
 
-            data = data.filter((offer) => offer.startDate.seconds < currentTimestamp && offer.endDate.seconds > currentTimestamp)
-
+            // para demo, no tiene filtros
             setOffers(data);
         };
 
         fetchOffers();
+
+        // auto refresh cada 3 segundos para ver nuevas ofertas (en producción se haría con sockets o similar)
+        const interval = setInterval(() => {
+            fetchOffers();
+        }, 3000);
+
+        return () => clearInterval(interval);
+
     }, []);
 
     const filteredOffers = selectedCategory
@@ -42,15 +46,20 @@ export default function Home() {
                     👋 Hola, <strong>{user.names}</strong>
                 </div>
             )}
+
             <h2>Ofertas disponibles</h2>
 
             <div className="grid coupons">
-                {filteredOffers.map((offer) => (
-                    <OfferCard key={offer.id} offer={offer} />
-                ))}
+                {filteredOffers.length === 0 ? (
+                    <p>No hay ofertas disponibles</p>
+                ) : (
+                    filteredOffers.map((offer) => (
+                        <OfferCard key={offer.id} offer={offer} />
+                    ))
+                )}
             </div>
         </div>
         <Footer />
       </>
     );
-  }
+}

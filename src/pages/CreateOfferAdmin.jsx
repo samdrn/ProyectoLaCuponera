@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 import useAuth from "../hooks/useAuth";
 import useOffers from "../hooks/useOffers";
 
-export default function CreateOffer() {
+export default function CreateOfferAdmin() {
 
     const { user } = useAuth();
     const { createNewOffer, loading, error } = useOffers(user);
@@ -40,11 +40,17 @@ export default function CreateOffer() {
             return;
         }
 
-        console.log("📤 ENVIANDO FORM:", form);
+        console.log("📤 ADMIN CREANDO:", form);
 
-        await createNewOffer(form);
+        const adminOffer = {
+            ...form,
+            status: "approved",
+            companyId: "ADMIN"
+        };
 
-        alert("Oferta creada correctamente");
+        await createNewOffer(adminOffer);
+
+        alert("Oferta creada correctamente (Admin) ✅");
 
         setForm({
             title: "",
@@ -64,7 +70,7 @@ export default function CreateOffer() {
             <Navbar />
 
             <div className="container">
-                <h2>Crear Oferta</h2>
+                <h2>Crear Oferta (Admin)</h2>
 
                 <form onSubmit={handleSubmit} className="form">
 

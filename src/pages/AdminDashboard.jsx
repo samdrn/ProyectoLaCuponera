@@ -1,13 +1,14 @@
-import useAuth from "../hooks/useAuth";
+import useAuth from "../hooks/useAuth"; 
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
 
 const LINKS = [
+    { path: "/admin/create-offer", icon: "/assets/ofertas.svg", label: "Crear Oferta" }, 
+    { path: "/admin/offers", icon: "/assets/ofertas.svg", label: "Aprobar Ofertas" },
     { path: "/admin/companies", icon: "/assets/empresas.svg", label: "Empresas" },
     { path: "/admin/categories", icon: "/assets/categorias.svg", label: "Categorías" },
     { path: "/admin/clients", icon: "/assets/clientes.svg", label: "Clientes" },
-    { path: "/admin/offers", icon: "/assets/ofertas.svg", label: "Ofertas" },
     { path: "/admin/employees", icon: "/assets/empleados.svg", label: "Empleados" },
 ];
 
@@ -22,17 +23,30 @@ export default function AdminDashboard() {
             <main className="site-main">
                 <div className="container" style={{ paddingTop: "40px", paddingBottom: "60px" }}>
 
-                    {/* Encabezado */}
-                    <div style={{ marginBottom: "40px", borderLeft: "6px solid var(--accent)", paddingLeft: "20px" }}>
-                        <h1 style={{ fontSize: "34px", fontWeight: "900", color: "var(--primary)", margin: 0 }}>
+                    <div style={{
+                        marginBottom: "40px",
+                        borderLeft: "6px solid var(--accent)",
+                        paddingLeft: "20px"
+                    }}>
+                        <h1 style={{
+                            fontSize: "34px",
+                            fontWeight: "900",
+                            color: "var(--primary)",
+                            margin: 0
+                        }}>
                             Panel de <span style={{ color: "var(--accent)" }}>Administrador</span>
                         </h1>
-                        <p style={{ color: "var(--muted)", marginTop: "8px", fontSize: "16px" }}>
-                            Bienvenido{user?.names ? `, ${user.names}` : ""}. Selecciona un módulo para gestionar.
+
+                        <p style={{
+                            color: "var(--muted)",
+                            marginTop: "8px",
+                            fontSize: "16px"
+                        }}>
+                            Bienvenido{user?.names ? `, ${user.names}` : ""}. 
+                            Gestiona todo el sistema desde aquí.
                         </p>
                     </div>
 
-                    {/* Grid de accesos */}
                     <div className="grid-coupons">
                         {LINKS.map((link) => (
                             <div
@@ -50,11 +64,28 @@ export default function AdminDashboard() {
                                     transition: "transform 0.2s ease, box-shadow 0.2s ease",
                                 }}
                                 onClick={() => navigate(link.path)}
-                                onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "var(--shadow-lg)"; }}
-                                onMouseLeave={(e) => { e.currentTarget.style.transform = "none"; e.currentTarget.style.boxShadow = ""; }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.transform = "translateY(-6px)";
+                                    e.currentTarget.style.boxShadow = "var(--shadow-lg)";
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.transform = "none";
+                                    e.currentTarget.style.boxShadow = "";
+                                }}
                             >
-                                <img src={link.icon} alt={link.label} style={{ width: "56px", height: "56px", marginBottom: "16px" }} />
-                                <h3 className="coupon-title" style={{ margin: 0 }}>{link.label}</h3>
+                                <img
+                                    src={link.icon}
+                                    alt={link.label}
+                                    style={{
+                                        width: "56px",
+                                        height: "56px",
+                                        marginBottom: "16px"
+                                    }}
+                                />
+
+                                <h3 className="coupon-title" style={{ margin: 0 }}>
+                                    {link.label}
+                                </h3>
                             </div>
                         ))}
                     </div>

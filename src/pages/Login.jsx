@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { loginUser, resetPassword } from "../services/authService";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../services/firebase";
 
 export default function Login() {
     const [email, setEmail] = useState("");
@@ -19,11 +21,24 @@ export default function Login() {
         setLoading(true);
 
         try {
-            await loginUser(email, password);
-            navigate("/");
+            const credential = await loginUser(email, password);
+
+            const userDoc = await getDoc(doc(db, "users", credential.user.uid));
+            const userData = userDoc.data();
+
+            if (userData?.role === "admin") {
+                navigate("/admin_dashboard");
+            } else if (userData?.role === "companyAdmin") {
+                navigate("/company");
+            } else if (userData?.role === "employee") {
+                navigate("/employee");
+            } else {
+                navigate("/");
+            }
+
         } catch (err) {
             console.error(err);
-            // Manejo básico de errores comunes de Firebase
+
             if (err.code === 'auth/invalid-credential' || err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
                 setError("Correo o contraseña incorrectos.");
             } else if (err.code === 'auth/too-many-requests') {
@@ -33,6 +48,7 @@ export default function Login() {
             } else {
                 setError("Ocurrió un error al iniciar sesión. Intenta nuevamente.");
             }
+
         } finally {
             setLoading(false);
         }
@@ -52,14 +68,16 @@ export default function Login() {
                 setResetEmail("");
                 setResetMessage("");
             }, 3000);
+
         } catch (err) {
             console.error(err);
-            // Manejo básico de errores comunes de Firebase
+
             if (err.code === 'auth/user-not-found') {
                 setResetMessage("Correo electrónico no encontrado.");
             } else {
                 setResetMessage("Error al enviar el correo electrónico.");
             }
+
         } finally {
             setLoading(false);
         }
@@ -67,6 +85,10 @@ export default function Login() {
 
     return (
         <div className="container" style={{ maxWidth: '400px', marginTop: '2rem' }}>
+            <button className="btn" onClick={() => navigate("/")} style={{ marginBottom: "10px" }}>
+                ← Volver al inicio
+            </button>
+            
             <h2>Iniciar sesión</h2>
 
             {error && (
@@ -154,12 +176,7 @@ export default function Login() {
                             onChange={(e) => setResetEmail(e.target.value)}
                             required
                         />
-                        <button
-                            className="btn btn-primary"
-                            type="submit"
-                            disabled={loading}
-                            style={{ opacity: loading ? 0.7 : 1 }}
-                        >
+                        <button className="btn btn-primary" type="submit" disabled={loading}>
                             {loading ? "Enviando..." : "Enviar"}
                         </button>
                         <button

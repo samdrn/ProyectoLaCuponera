@@ -53,6 +53,10 @@ export default function Register() {
 
     return (
         <div className="container" style={{ maxWidth: '500px', marginTop: '2rem' }}>
+            <button  className="btn" onClick={() => navigate("/")} style={{ marginBottom: "10px" }}>
+                ← Volver al inicio
+            </button>
+            
             <h2>Registrarse</h2>
             
             {error && (

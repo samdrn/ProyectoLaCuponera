@@ -1,80 +1,98 @@
 import { useState } from "react";
 import {
-    getAllOffers,
     createOffer,
-    updateOffer,
-    updateOfferStatus,
-    deleteOffer,
+    getOffersByCompany,
+    deleteOffer
 } from "../services/offersService";
+import { Timestamp } from "firebase/firestore";
 
-export default function useOffers() {
+export default function useOffers(user) {
+
     const [offers, setOffers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const getOffers = async () => {
-        setError(null);
+    /**
+     * crear oferta
+     */
+    const createNewOffer = async (data) => {
         setLoading(true);
+        setError(null);
+
         try {
-            const data = await getAllOffers();
-            setOffers(data);
+            if (!user?.companyId) {
+                throw new Error("Usuario sin empresa asignada");
+            }
+
+            const offerData = {
+                title: data.title,
+                description: data.description,
+                category: data.category,
+
+                companyId: user.companyId,
+                company: data.company || "",
+
+                offerPrice: Number(data.offerPrice),
+                regularPrice: Number(data.regularPrice),
+                limitCoupons: Number(data.limitCoupons),
+
+                startDate: data.startDate,
+                endDate: data.endDate,
+                couponEndDate: data.couponEndDate,
+
+                status: "pending",
+                soldCoupons: 0,
+                remaining: true,
+
+                createdAt: Timestamp.now()
+            };
+
+            const created = await createOffer(offerData);
+
+            if (created) {
+                setOffers(prev => [...prev, created]);
+            }
+
         } catch (err) {
+            console.error("Error al crear oferta:", err);
             setError(err.message);
         } finally {
             setLoading(false);
         }
     };
 
-    const addOffer = async (data) => {
-        setError(null);
-        setLoading(true);
+    /**
+     * obtener ofertas de la empresa
+     */
+    const fetchMyOffers = async () => {
         try {
-            const created = await createOffer(data);
-            setOffers((prev) => [...prev, created]);
-            return created;
+            if (!user?.companyId) return;
+
+            setLoading(true);
+            setError(null);
+
+            const data = await getOffersByCompany(user.companyId);
+
+            setOffers(Array.isArray(data) ? data : []);
+
         } catch (err) {
+            console.error("Error al obtener ofertas:", err);
             setError(err.message);
         } finally {
             setLoading(false);
         }
     };
 
-    const editOffer = async (id, data) => {
-        setError(null);
-        setLoading(true);
+    /**
+     * eliminar oferta (solo pending)
+     */
+    const removeOffer = async (offerId) => {
         try {
-            const updated = await updateOffer(id, data);
-            setOffers((prev) => prev.map((o) => (o.id === id ? { ...o, ...updated } : o)));
-            return updated;
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
-        }
-    };
+            await deleteOffer(offerId);
 
-    const changeStatus = async (id, status) => {
-        setError(null);
-        try {
-            await updateOfferStatus(id, status);
-            setOffers((prev) =>
-                prev.map((o) => (o.id === id ? { ...o, status } : o))
-            );
+            setOffers(prev => prev.filter(o => o.id !== offerId));
         } catch (err) {
-            setError(err.message);
-        }
-    };
-
-    const removeOffer = async (id) => {
-        setError(null);
-        setLoading(true);
-        try {
-            await deleteOffer(id);
-            setOffers((prev) => prev.filter((o) => o.id !== id));
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
+            console.error("Error eliminando oferta:", err);
         }
     };
 
@@ -82,10 +100,8 @@ export default function useOffers() {
         offers,
         loading,
         error,
-        getOffers,
-        addOffer,
-        editOffer,
-        changeStatus,
-        removeOffer,
+        createNewOffer,
+        fetchMyOffers,
+        removeOffer
     };
 }

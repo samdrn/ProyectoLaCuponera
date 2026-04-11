@@ -1,17 +1,27 @@
 import { auth, db } from "./firebase";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, updatePassword, EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
+import {
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+    sendPasswordResetEmail,
+    updatePassword,
+    EmailAuthProvider,
+    reauthenticateWithCredential
+} from "firebase/auth";
 import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
 
 export const registerUser = async (userData) => {
-    const { email, password, ...extraData } = userData;
+    const { email, password, role, companyId, ...extraData } = userData;
+
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    // Guardar información extendida en Firestore
+    // ahora permite roles dinámicos sin romper el flujo actual
     await setDoc(doc(db, "users", user.uid), {
         email,
         ...extraData,
-        role: "client",
+        role: role || "client",
+        companyId: companyId || null,
         createdAt: new Date().toISOString()
     });
 
@@ -32,23 +42,27 @@ export const resetPassword = async (email) => {
 
 export const changePassword = async (currentPassword, newPassword) => {
     const user = auth.currentUser;
+
     if (!user) {
         throw new Error("No estás autenticado");
     }
+
     const credentiales = EmailAuthProvider.credential(user.email, currentPassword);
-    await reauthenticateWithCredential(auth, credentiales);
-    await updatePassword(auth, newPassword);
+    await reauthenticateWithCredential(user, credentiales); // 🔥 FIX (era auth)
+    await updatePassword(user, newPassword);
 
     return true;
 };
 
 export const getUserRole = async (uid) => {
-    try{
+    try {
         const userDoc = await getDoc(doc(db, "users", uid));
+
         if (userDoc.exists()) {
             const userData = userDoc.data();
             return userData.role || "client";
         }
+
         return "client";
     } catch (error) {
         console.error("Error al obtener el rol del usuario:", error);
@@ -63,7 +77,6 @@ export const updateUserRole = async (uid, newRole) => {
         return true;
     } catch (error) {
         console.error("Error al actualizar el rol del usuario:", error);
-        throw error;
+        throw error; 
     }
 };
-

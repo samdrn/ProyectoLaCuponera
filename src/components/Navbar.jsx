@@ -14,7 +14,7 @@ export default function Navbar() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const activeCategory = searchParams.get("category");
-  const { user } = useAuth(); // Asumimos que useAuth nos da el usuario con su ROL
+  const { user } = useAuth();
 
   const handleLogout = async () => {
     try {
@@ -49,23 +49,44 @@ export default function Navbar() {
         <div className="nav-actions">
           {user ? (
             <>
-              {/* 🔧 OPCIÓN PARA EL ADMINISTRADOR */}
+              {/* 🔧 ADMIN */}
               {user.role === 'admin' && (
-                <Link to="/admin_dashboard" className="nav-link-simple" style={{color: 'var(--accent)', fontWeight: 'bold'}}>
+                <Link 
+                  to="/admin_dashboard" 
+                  className="nav-link-simple" 
+                  style={{color: 'var(--accent)', fontWeight: 'bold'}}
+                >
                   Panel Admin
                 </Link>
               )}
 
-              {/* 🎫 OPCIÓN PARA EL EMPLEADO */}
+              {/* 🏢 EMPRESA 🔥 NUEVO */}
+              {user.role === 'companyAdmin' && (
+                <Link 
+                  to="/company" 
+                  className="nav-link-simple" 
+                  style={{color: 'var(--accent)', fontWeight: 'bold'}}
+                >
+                  Panel Empresa
+                </Link>
+              )}
+
+              {/* 🎫 EMPLEADO */}
               {user.role === 'employee' && (
-                <Link to="/employee" className="nav-link-simple" style={{color: 'var(--accent)', fontWeight: 'bold'}}>
+                <Link 
+                  to="/employee" 
+                  className="nav-link-simple" 
+                  style={{color: 'var(--accent)', fontWeight: 'bold'}}
+                >
                   Canje de Cupones
                 </Link>
               )}
 
-              {/* 🏢 OPCIONES PARA CLIENTE COMÚN */}
+              {/* 👤 CLIENTE */}
               {user.role === 'client' && (
-                <Link to="/coupons" className="nav-link-simple">Mis cupones</Link>
+                <Link to="/coupons" className="nav-link-simple">
+                  Mis cupones
+                </Link>
               )}
 
               <Link to="/profile" className="nav-link-simple">Mi Perfil</Link>

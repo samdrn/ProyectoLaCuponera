@@ -15,30 +15,39 @@ export const AuthProvider = ({ children }) => {
                 try {
                     const docRef = doc(db, "users", currentUser.uid);
                     const docSnap = await getDoc(docRef);
-                    
+
                     if (docSnap.exists()) {
-                        setUser({ ...currentUser, ...docSnap.data() });
+                        setUser({
+                            uid: currentUser.uid,
+                            email: currentUser.email,
+                            ...docSnap.data()
+                        });
                     } else {
-                        setUser(currentUser);
+                        setUser({
+                            uid: currentUser.uid,
+                            email: currentUser.email
+                        });
                     }
                 } catch (error) {
                     console.error("Error al obtener usuario:", error);
-                    setUser(currentUser);
+                    setUser({
+                        uid: currentUser.uid,
+                        email: currentUser.email
+                    });
                 }
             } else {
                 setUser(null);
             }
+
             setLoading(false);
         });
-        
+
         return unsubscribe;
     }, []);
 
-    
-
     return (
         <AuthContext.Provider value={{ user, loading }}>
-            {children} 
+            {children}
         </AuthContext.Provider>
     );
 };
