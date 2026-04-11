@@ -5,6 +5,7 @@ import { generateCompanyCode } from "../utils/generateCompanyCode";
 
 export default function useCompanies(){
 
+
     const [companies, setCompanies] = useState([]);
     const [company, setCompany] = useState(null)
     const [loading, setLoading] = useState(false);

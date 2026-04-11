@@ -1,34 +1,41 @@
 import { db } from "./firebase";
-import {
-    addDoc,
-    collection,
-    deleteDoc,
-    doc,
-    getDocs,
-    updateDoc,
-    getDoc,
-} from "firebase/firestore";
+import { addDoc, collection, deleteDoc, getDocs, updateDoc } from "firebase/firestore";
 
 // crea categoría
 export const create = async (categoryData) => {
-    const docRef = await addDoc(collection(db, "categories"), categoryData);
-    return { id: docRef.id, ...categoryData };
+    const snapshot = await addDoc(collection(db, "categories"), categoryData);
+
+        return snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+    }));
 };
 
 // elimina categoría por id
 export const remove = async (id) => {
-    return await deleteDoc(doc(db, "categories", id));
-};
+    const snapshot = await deleteDoc(doc(db, "categories", id));
+
+        return snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+    }));
+}
 
 // actualiza categoría por id
 export const update = async (id, categoryData) => {
-    const ref = doc(db, "categories", id);
-    await updateDoc(ref, categoryData);
-    return { id, ...categoryData };
-};
+    const snapshot =  await updateDoc(doc(db, "categories", id), categoryData);
+
+        return snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+    }));
+}
 
 // obtiene todas las categorías
 export const getAll = async () => {
     const snapshot = await getDocs(collection(db, "categories"));
-    return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
-};
+    return snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+    }));
+}
