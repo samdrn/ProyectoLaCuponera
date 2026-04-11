@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { getAll, getById } from "../services/clientService";
+import {
+    getAll,
+    getById,
+    updateClient,
+    deleteClient
+} from "../services/clientService";
 
 export default function useClients() {
     const [clients, setClients] = useState([]);
@@ -33,6 +38,26 @@ export default function useClients() {
         }
     };
 
+    // UPDATE
+    const updateClientData = async (id, data) => {
+        await updateClient(id, data);
+
+        setClients(prev =>
+            prev.map(c =>
+                c.id === id ? { ...c, ...data } : c
+            )
+        );
+    };
+
+    // DELETE
+    const deleteClientData = async (id) => {
+        await deleteClient(id);
+
+        setClients(prev =>
+            prev.filter(c => c.id !== id)
+        );
+    };
+
     return {
         clients,
         client,
@@ -40,5 +65,7 @@ export default function useClients() {
         error,
         getClients,
         getClientById,
+        updateClientData,
+        deleteClientData
     };
 }

@@ -1,5 +1,14 @@
 import { db } from "./firebase";
-import { collection, getDocs, query, where, doc, getDoc } from "firebase/firestore";
+import {
+    collection,
+    getDocs,
+    query,
+    where,
+    doc,
+    getDoc,
+    updateDoc,
+    deleteDoc
+} from "firebase/firestore";
 
 // obtener todos los clientes
 export const getAll = async () => {
@@ -16,7 +25,7 @@ export const getAll = async () => {
     }));
 };
 
-// obtener cliente por id
+// obtener por id
 export const getById = async (id) => {
     const snapshot = await getDoc(doc(db, "users", id));
 
@@ -26,4 +35,14 @@ export const getById = async (id) => {
         id: snapshot.id,
         ...snapshot.data()
     };
+};
+
+// actualizar cliente
+export const updateClient = async (id, data) => {
+    await updateDoc(doc(db, "users", id), data);
+};
+
+// eliminar cliente
+export const deleteClient = async (id) => {
+    await deleteDoc(doc(db, "users", id));
 };
