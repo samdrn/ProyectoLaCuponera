@@ -89,3 +89,23 @@ export const getApprovedOffers = async () => {
         ...doc.data()
     }));
 };
+
+/**
+ * eliminar oferta (soft delete)
+ */
+export const deleteOfferByAdmin = async (offerId) => {
+    const ref = doc(db, "offers", offerId);
+
+    await updateDoc(ref, {
+        status: "deleted"
+    });
+};
+
+/**
+ * actualizar oferta (admin)
+ */
+export const updateOffer = async (offerId, updatedData) => {
+    const ref = doc(db, "offers", offerId);
+
+    await updateDoc(ref, updatedData);
+};

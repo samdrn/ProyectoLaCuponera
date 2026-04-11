@@ -36,10 +36,10 @@ export default function useOffers(user) {
                 regularPrice: Number(data.regularPrice),
                 limitCoupons: Number(data.limitCoupons),
 
-                startDate: data.startDate,
-                endDate: data.endDate,
-                couponEndDate: data.couponEndDate,
-
+                startDate: Timestamp.fromDate(new Date(data.startDate)),
+                endDate: Timestamp.fromDate(new Date(data.endDate)),
+                couponEndDate: Timestamp.fromDate(new Date(data.couponEndDate)),
+                
                 status: "pending",
                 soldCoupons: 0,
                 remaining: true,

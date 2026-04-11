@@ -23,6 +23,7 @@ import ManageCategories from "../pages/ManageCategories";
 import AdminOffers from "../pages/AdminOffers";
 import ManageEmployees from "../pages/ManageEmployees";
 import CreateOfferAdmin from "../pages/CreateOfferAdmin";
+import AdminCompaniesOffers from "../pages/AdminCompaniesOffers";
 
 // 🎫 Empleado
 import EmployeeDashboard from "../pages/EmployeeDashboard";
@@ -153,6 +154,14 @@ export default function AppRouter() {
                     <ProtectedRoute>
                         <AdminRoute>
                             <ManageEmployees />
+                        </AdminRoute>
+                    </ProtectedRoute>
+                } />
+
+                <Route path="/admin/companies-offers" element={
+                    <ProtectedRoute>
+                        <AdminRoute>
+                            <AdminCompaniesOffers />
                         </AdminRoute>
                     </ProtectedRoute>
                 } />

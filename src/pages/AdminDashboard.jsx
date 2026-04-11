@@ -7,6 +7,7 @@ const LINKS = [
     { path: "/admin/create-offer", icon: "/assets/ofertas.svg", label: "Crear Oferta" }, 
     { path: "/admin/offers", icon: "/assets/ofertas.svg", label: "Aprobar Ofertas" },
     { path: "/admin/companies", icon: "/assets/empresas.svg", label: "Empresas" },
+    { path: "/admin/companies-offers", icon: "/assets/ofertas.svg", label: "Ofertas por Empresa" },
     { path: "/admin/categories", icon: "/assets/categorias.svg", label: "Categorías" },
     { path: "/admin/clients", icon: "/assets/clientes.svg", label: "Clientes" },
     { path: "/admin/employees", icon: "/assets/empleados.svg", label: "Empleados" },
@@ -61,29 +62,16 @@ export default function AdminDashboard() {
                                     alignItems: "center",
                                     justifyContent: "center",
                                     minHeight: "200px",
-                                    transition: "transform 0.2s ease, box-shadow 0.2s ease",
                                 }}
                                 onClick={() => navigate(link.path)}
-                                onMouseEnter={(e) => {
-                                    e.currentTarget.style.transform = "translateY(-6px)";
-                                    e.currentTarget.style.boxShadow = "var(--shadow-lg)";
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.currentTarget.style.transform = "none";
-                                    e.currentTarget.style.boxShadow = "";
-                                }}
                             >
                                 <img
                                     src={link.icon}
                                     alt={link.label}
-                                    style={{
-                                        width: "56px",
-                                        height: "56px",
-                                        marginBottom: "16px"
-                                    }}
+                                    style={{ width: "56px", marginBottom: "16px" }}
                                 />
 
-                                <h3 className="coupon-title" style={{ margin: 0 }}>
+                                <h3 className="coupon-title">
                                     {link.label}
                                 </h3>
                             </div>

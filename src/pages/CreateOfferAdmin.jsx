@@ -1,12 +1,12 @@
 import { useState } from "react";
 import Navbar from "../components/Navbar";
-import useAuth from "../hooks/useAuth";
-import useOffers from "../hooks/useOffers";
+import { createOffer } from "../services/offersService";
+import { Timestamp } from "firebase/firestore";
 
 export default function CreateOfferAdmin() {
 
-    const { user } = useAuth();
-    const { createNewOffer, loading, error } = useOffers(user);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     const [form, setForm] = useState({
         title: "",
@@ -40,29 +40,52 @@ export default function CreateOfferAdmin() {
             return;
         }
 
-        console.log("📤 ADMIN CREANDO:", form);
+        try {
+            setLoading(true);
+            setError(null);
 
-        const adminOffer = {
-            ...form,
-            status: "approved",
-            companyId: "ADMIN"
-        };
+            const offerData = {
+                title: form.title,
+                description: form.description,
+                category: form.category,
+                companyId: "VAitF5ebz9Vz7p2lFmKg",
 
-        await createNewOffer(adminOffer);
+                offerPrice: Number(form.offerPrice),
+                regularPrice: Number(form.regularPrice),
+                limitCoupons: Number(form.limitCoupons),
 
-        alert("Oferta creada correctamente (Admin) ✅");
+                startDate: Timestamp.fromDate(new Date(form.startDate)),
+                endDate: Timestamp.fromDate(new Date(form.endDate)),
+                couponEndDate: Timestamp.fromDate(new Date(form.couponEndDate)),
 
-        setForm({
-            title: "",
-            description: "",
-            category: "",
-            offerPrice: "",
-            regularPrice: "",
-            limitCoupons: "",
-            startDate: "",
-            endDate: "",
-            couponEndDate: ""
-        });
+                status: "approved",
+                soldCoupons: 0,
+                remaining: true,
+                createdAt: Timestamp.now()
+            };
+
+            await createOffer(offerData);
+
+            alert("Oferta creada correctamente ✅");
+
+            setForm({
+                title: "",
+                description: "",
+                category: "",
+                offerPrice: "",
+                regularPrice: "",
+                limitCoupons: "",
+                startDate: "",
+                endDate: "",
+                couponEndDate: ""
+            });
+
+        } catch (err) {
+            console.error(err);
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -75,35 +98,18 @@ export default function CreateOfferAdmin() {
                 <form onSubmit={handleSubmit} className="form">
 
                     <div className="form-group">
-                        <label>Título de la oferta</label>
-                        <input
-                            name="title"
-                            placeholder="Ej: Pizza 2x1"
-                            value={form.title}
-                            onChange={handleChange}
-                            required
-                        />
+                        <label>Título</label>
+                        <input name="title" placeholder="Ej: Pizza 2x1" value={form.title} onChange={handleChange} required />
                     </div>
 
                     <div className="form-group">
                         <label>Descripción</label>
-                        <input
-                            name="description"
-                            placeholder="Descripción de la promoción"
-                            value={form.description}
-                            onChange={handleChange}
-                            required
-                        />
+                        <input name="description" placeholder="Describe la promoción" value={form.description} onChange={handleChange} required />
                     </div>
 
                     <div className="form-group">
                         <label>Categoría</label>
-                        <select
-                            name="category"
-                            value={form.category}
-                            onChange={handleChange}
-                            required
-                        >
+                        <select name="category" value={form.category} onChange={handleChange} required>
                             <option value="">Selecciona una categoría</option>
                             <option value="Restaurantes">Restaurantes</option>
                             <option value="Diversion">Diversión</option>
@@ -115,74 +121,35 @@ export default function CreateOfferAdmin() {
 
                     <div className="form-group">
                         <label>Precio normal</label>
-                        <input
-                            type="number"
-                            name="regularPrice"
-                            placeholder="Ej: 20"
-                            value={form.regularPrice}
-                            onChange={handleChange}
-                            required
-                        />
+                        <input type="number" name="regularPrice" placeholder="Ej: 20" value={form.regularPrice} onChange={handleChange} required />
                     </div>
 
                     <div className="form-group">
-                        <label>Precio con descuento</label>
-                        <input
-                            type="number"
-                            name="offerPrice"
-                            placeholder="Ej: 10"
-                            value={form.offerPrice}
-                            onChange={handleChange}
-                            required
-                        />
+                        <label>Precio oferta</label>
+                        <input type="number" name="offerPrice" placeholder="Ej: 10" value={form.offerPrice} onChange={handleChange} required />
                     </div>
 
                     <div className="form-group">
-                        <label>Cantidad de cupones disponibles</label>
-                        <input
-                            type="number"
-                            name="limitCoupons"
-                            placeholder="Ej: 100"
-                            value={form.limitCoupons}
-                            onChange={handleChange}
-                            required
-                        />
+                        <label>Límite de cupones</label>
+                        <input type="number" name="limitCoupons" placeholder="Ej: 100" value={form.limitCoupons} onChange={handleChange} required />
                     </div>
 
                     <div className="form-group">
-                        <label>Fecha de inicio de la oferta</label>
-                        <input
-                            type="date"
-                            name="startDate"
-                            value={form.startDate}
-                            onChange={handleChange}
-                            required
-                        />
+                        <label>Inicio</label>
+                        <input type="date" name="startDate" value={form.startDate} onChange={handleChange} required />
                     </div>
 
                     <div className="form-group">
-                        <label>Fecha de finalización de la oferta</label>
-                        <input
-                            type="date"
-                            name="endDate"
-                            value={form.endDate}
-                            onChange={handleChange}
-                            required
-                        />
+                        <label>Fin</label>
+                        <input type="date" name="endDate" value={form.endDate} onChange={handleChange} required />
                     </div>
 
                     <div className="form-group">
-                        <label>Fecha límite para usar el cupón</label>
-                        <input
-                            type="date"
-                            name="couponEndDate"
-                            value={form.couponEndDate}
-                            onChange={handleChange}
-                            required
-                        />
+                        <label>Vencimiento del cupón</label>
+                        <input type="date" name="couponEndDate" value={form.couponEndDate} onChange={handleChange} required />
                     </div>
 
-                    <button type="submit" className="btn btn-primary" disabled={loading}>
+                    <button type="submit" disabled={loading}>
                         {loading ? "Creando..." : "Crear Oferta"}
                     </button>
 

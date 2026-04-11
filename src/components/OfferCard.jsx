@@ -4,6 +4,7 @@ import Modal from './Modal';
 
 export const OfferCard = ({ offer }) => {
   const {
+    title,
     description,
     endDate,
     limitCoupons,
@@ -12,10 +13,7 @@ export const OfferCard = ({ offer }) => {
     category
   } = offer;
 
-  // MODAL COMPRA
   const [isOpen, setIsOpen] = useState(false);
-
-  // MODAL DETALLES
   const [showDetails, setShowDetails] = useState(false);
 
   const cardClass = isOpen
@@ -34,10 +32,8 @@ export const OfferCard = ({ offer }) => {
 
   return (
     <>
-      {/* CARD */}
       <article className={cardClass}>
 
-        {/* IZQUIERDA: IMAGEN */}
         <div className="offer-card-image-content">
           <img
             src={`/assets/${category}.svg`}
@@ -47,19 +43,35 @@ export const OfferCard = ({ offer }) => {
           <span className="category-badge">{category}</span>
         </div>
 
-        {/* CENTRO: INFO */}
         <div className="offer-card-main-info">
-          <h3 className="offer-desc" title={description}>
-            {description}
+
+          <h3
+            style={{
+              margin: "0 0 6px 0",
+              fontWeight: "700",
+              fontSize: "18px"
+            }}
+          >
+            {title || "Oferta sin título"}
           </h3>
+
+          <p
+            className="offer-desc"
+            style={{
+              marginBottom: "10px",
+              color: "var(--muted)"
+            }}
+          >
+            {description}
+          </p>
 
           <div className="offer-card-footer-info">
             {limitCoupons ? (
               <p className="amount-bought">
-                Límite: <strong>{limitCoupons}</strong> unidades
+                Límite: <strong>{limitCoupons}</strong>
               </p>
             ) : (
-              <p className="amount-bought">Sin límite de compra</p>
+              <p className="amount-bought">Sin límite</p>
             )}
 
             <p className="expiration-date">
@@ -68,7 +80,6 @@ export const OfferCard = ({ offer }) => {
           </div>
         </div>
 
-        {/* DERECHA: PRECIO + BOTONES */}
         <div className="offer-card-actions">
 
           <div className="price-stack">
@@ -78,17 +89,11 @@ export const OfferCard = ({ offer }) => {
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-            <button
-              className="details-button"
-              onClick={handleOpen}
-            >
+            <button className="details-button" onClick={handleOpen}>
               Comprar
             </button>
 
-            <button
-              className="btn"
-              onClick={() => setShowDetails(true)}
-            >
+            <button className="btn" onClick={() => setShowDetails(true)}>
               Ver detalles
             </button>
           </div>
@@ -110,14 +115,14 @@ export const OfferCard = ({ offer }) => {
         title="Detalle de la oferta"
         onClose={() => setShowDetails(false)}
         footer={
-          <button
-            className="btn"
-            onClick={() => setShowDetails(false)}
-          >
+          <button className="btn" onClick={() => setShowDetails(false)}>
             Cerrar
           </button>
         }
       >
+
+        <p><strong>Título:</strong> {title}</p>
+
         <p><strong>Descripción:</strong> {description}</p>
 
         <div className="hr"></div>
@@ -125,7 +130,6 @@ export const OfferCard = ({ offer }) => {
         <p><strong>Categoría:</strong> {category}</p>
         <p><strong>Precio normal:</strong> ${regularPrice}</p>
         <p><strong>Precio oferta:</strong> ${offerPrice}</p>
-
         <p><strong>Ahorro:</strong> ${ahorro}</p>
 
         <p>
